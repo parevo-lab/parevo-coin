@@ -1,0 +1,29 @@
+{
+  "name": "paiascoin",
+  "version": "1.0.0",
+  "private": true,
+  "description": "PaiasCoin (PAI) - ERC20 token, staking, vesting, buyback - product-ready blueprint",
+  "scripts": {
+    "build": "hardhat compile",
+    "clean": "hardhat clean",
+    "test": "hardhat test",
+    "deploy:testnet": "ts-node --transpile-only scripts/deploy/00_full_deploy.ts --network ${NETWORK:-sepolia}",
+    "deploy:mainnet": "ts-node --transpile-only scripts/deploy/00_full_deploy.ts --network ${NETWORK:-mainnet}",
+    "verify": "ts-node --transpile-only scripts/verify.ts",
+    "buyback": "ts-node --transpile-only scripts/run_buyback.ts",
+    "seed:lp": "ts-node --transpile-only scripts/seed_liquidity.ts"
+  },
+  "devDependencies": {
+    "@nomicfoundation/hardhat-toolbox": "^5.0.0",
+    "@types/node": "^20.12.12",
+    "dotenv": "^16.4.5",
+    "hardhat": "^2.22.5",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.4.3"
+  },
+  "dependencies": {
+    "@openzeppelin/contracts": "^5.0.2",
+    "ethers": "^6.11.1"
+  }
+}
+

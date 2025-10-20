@@ -1,0 +1,77 @@
+# Coin (ERC-20) – Product-Ready Blueprint
+
+Open-source ERC-20 token with Staking, Vesting, and Buyback/Burn. Built with Hardhat for testnet/mainnet deployments.
+
+## Features
+- ERC-20 with pause, burn, roles (admin/operator/treasury)
+- Staking: rewards per second, lockup, fundable treasury
+- Vesting: cliff + linear schedule, optional revoke
+- Buyback/Burn: Uniswap/PancakeV2 integration, configurable path/slippage
+- Security: OpenZeppelin guards (AccessControl, ReentrancyGuard, Pausable)
+
+## Quick Start
+```bash
+npm i
+npm run build
+```
+
+## Environment
+Copy `.env.example` to `.env` and set:
+- PRIVATE_KEY: deployer private key (0x…)
+- SEPOLIA_RPC_URL or BSC_TESTNET_RPC_URL
+- ADMIN_MULTISIG: multisig (optional; deployer used if empty)
+- TOKEN_NAME / TOKEN_SYMBOL: e.g. “PaiasCoin” / “PAI”
+- ROUTER / BASE_TOKEN: DEX router and base token (optional; for LP/buyback)
+
+## Deploy
+```bash
+# Sepolia
+NETWORK=sepolia npm run deploy:testnet
+# BSC Testnet
+NETWORK=bscTestnet npm run deploy:testnet
+```
+Outputs token, staking, vesting addresses. If ROUTER/BASE_TOKEN invalid, Buyback deploy is skipped.
+
+## Liquidity (optional)
+```bash
+ROUTER=0xRouter PAI=0xToken BASE_TOKEN=0xBaseToken \
+AMOUNT_PAI=1000000 AMOUNT_BASE=10000 npm run seed:lp
+```
+
+## Staking (summary)
+- Fund rewards: `fundRewards(amount)`
+- Stake/Harvest/Unstake flow
+- Change params: `setParams(ratePerSec, lockSeconds)`
+
+## Vesting (summary)
+- Create: `create(beneficiary, { total, start, cliff, duration, revocable })`
+- Beneficiary claims: `release()`
+
+## Buyback (summary)
+```bash
+# set path and fund
+npx hardhat console --network $NETWORK
+// inside:
+const bb = await ethers.getContractAt("Buyback","0xBuyback")
+await bb.setPath(["0xBASE","0xPAI"])
+# run
+BUYBACK=0xBuyback AMOUNT=1000 BURN=true npm run buyback
+```
+
+## Verify (optional)
+```bash
+CONTRACT=0xToken ARGS='["0xAdmin","1000000000000000000000000000"]' npm run verify
+```
+
+## Security & Roles
+- Roles: DEFAULT_ADMIN_ROLE (multisig), OPERATOR_ROLE, TREASURY_ROLE
+- Uses OZ Pausable/ReentrancyGuard
+- Before mainnet: transfer roles to multisig, test pause/unpause, validate parameters
+
+## Folder Structure
+- contracts/: Coin.sol, Staking.sol, Vesting.sol, Buyback.sol, interfaces/
+- scripts/: deploy, verify, seed_liquidity, run_buyback
+- hardhat.config.ts, .env.example, LICENSE
+
+## License
+MIT
