@@ -20,7 +20,7 @@ Copy `.env.example` to `.env` and set:
 - PRIVATE_KEY: deployer private key (0x…)
 - SEPOLIA_RPC_URL or BSC_TESTNET_RPC_URL
 - ADMIN_MULTISIG: multisig (optional; deployer used if empty)
-- TOKEN_NAME / TOKEN_SYMBOL: e.g. “PaiasCoin” / “PAI”
+- TOKEN_NAME / TOKEN_SYMBOL: e.g. “ParevoCoin” / “PAI”
 - ROUTER / BASE_TOKEN: DEX router and base token (optional; for LP/buyback)
 
 ## Deploy
